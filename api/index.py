@@ -103,12 +103,12 @@ def home():
         if not certificates: raise Exception("DB Kosong")
     except:
         certificates = [
-            {"title": "CCNA Introduction to Networks", "issuer": "CISCO", "year": "2025", "image_url": "/static/img/CCNA Introduction to Networks.png"},
-            {"title": "CCNA: Enterprise Networking", "issuer": "CISCO", "year": "2025", "image_url": "/static/img/CCNA Enterprise.png"},
-            {"title": "CCNA: Switching, Routing", "issuer": "CISCO", "year": "2025", "image_url": "/static/img/CCNA Switching.png"},
-            {"title": "Cybersecurity Educator", "issuer": "RED TEAM LEADERS", "year": "2025", "image_url": "/static/img/Certified Cybersecurity Educator Professional (CCEP).png"},
-            {"title": "Phishing Prevention (CPPS)", "issuer": "Hack & Fix", "year": "2025", "image_url": "/static/img/Certified Phising Prevention Specialist (CPPS).png"},
-            {"title": "Malware Analysis Intro", "issuer": "RED TEAM LEADERS", "year": "2025", "image_url": "/static/img/Malware Analysis Introduction v1.png"}
+            {"title": "CCNA Introduction to Networks", "issuer": "CISCO", "year": "2025", "image_url": "/static/img/ccna-intro.png"},
+            {"title": "CCNA: Enterprise Networking", "issuer": "CISCO", "year": "2025", "image_url": "/static/img/ccna-enterprise.png"},
+            {"title": "CCNA: Switching, Routing", "issuer": "CISCO", "year": "2025", "image_url": "/static/img/ccna-switching.png"},
+            {"title": "Cybersecurity Educator", "issuer": "RED TEAM LEADERS", "year": "2025", "image_url": "/static/img/ccep.png"},
+            {"title": "Phishing Prevention (CPPS)", "issuer": "Hack & Fix", "year": "2025", "image_url": "/static/img/cpps.png"},
+            {"title": "Malware Analysis Intro", "issuer": "RED TEAM LEADERS", "year": "2025", "image_url": "/static/img/malware-intro.png"}
         ]
 
     return render_template('index.html', me=me, projects=projects, certificates=certificates, socials=socials, education=education)
