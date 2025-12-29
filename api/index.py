@@ -82,7 +82,7 @@ def home():
     socials = [
         {"name": "GitHub", "username": "@LaOdhe16", "link": "https://github.com/LaOdhe16", "icon": "github", "color": "hover:text-white"},
         {"name": "LinkedIn", "username": "Salvado Odhe", "link": "https://www.linkedin.com/in/salvado-odhe-306369356/", "icon": "linkedin", "color": "hover:text-blue-400"},
-        {"name": "Instagram", "username": "@salvatooddd", "link": "https://www.instagram.com/salvatooddd/", "icon": "instagram", "color": "hover:text-pink-500"},
+        {"name": "Instagram", "username": "@elsalvtoreee", "link": "https://www.instagram.com/elsalvtoreee/", "icon": "instagram", "color": "hover:text-pink-500"},
         {"name": "Email", "username": "aryabutur94@gmail.com", "link": "mailto:email@example.com", "icon": "mail", "color": "hover:text-cyan-400"}
     ]
 
