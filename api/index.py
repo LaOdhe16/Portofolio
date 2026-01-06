@@ -94,7 +94,8 @@ def home():
         projects = [
             {"title": "YARA Malware Detection Rules", "description": "A collection of YARA rules for identifying and detecting malware patterns using YARA’s rule-based scanning syntax. The repository contains custom `.yar` signatures aimed at improving threat detection and malware analysis workflows.", "tech_stack": "YARA", "link": "https://github.com/LaOdhe16/Yara-Rule"},
             {"title": "Flappy Bird Game (Python)", "description": "A Python-based implementation of the classic Flappy Bird game, featuring game logic and assets to recreate the addictive side-scrolling bird gameplay in a desktop environment.", "tech_stack": "Python", "link": "https://github.com/LaOdhe16/Projek-Game-Flappy-Bird"},
-            {"title": "Library Book Borrowing System", "description": "A web-based library management and book borrowing application built with Flask and MySQL, featuring user authentication, book search, borrowing/returning functions, and admin book management.", "tech_stack": "Python, Flask, MySQL, Bootstrap", "link": "https://github.com/LaOdhe16/Library_Management"}
+            {"title": "Library Book Borrowing System", "description": "A web-based library management and book borrowing application built with Flask and MySQL, featuring user authentication, book search, borrowing/returning functions, and admin book management.", "tech_stack": "Python, Flask, MySQL, Bootstrap", "link": "https://github.com/LaOdhe16/Library_Management"},
+            {"title": "HomeService", "description": "HomeService is a web-based platform built with Python and Flask to manage household service bookings, hosted on Microsoft Azure with a MySQL database.", "tech_stack": "Python, Flask, Azure For MySQL, Azure APP Service", "link": "https://github.com/LaOdhe16/HomeService"}
         ]
 
     # 5. Data Certificates 
