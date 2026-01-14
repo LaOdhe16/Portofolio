@@ -8,11 +8,21 @@
     <link rel="icon" href="{{ url_for('static', filename='img/profile.jpg') }}" type="image/jpeg">
     
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <script src="https://unpkg.com/lucide@latest"></script>
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body class="antialiased bg-[#0f172a] text-white font-['Outfit'] selection:bg-cyan-500 selection:text-white">
+<body class="antialiased bg-[#0f172a] text-white font-['Outfit'] selection:bg-cyan-500 selection:text-white overflow-x-hidden">
+
+    <div id="boot-overlay">
+        <div class="terminal-container font-['Space_Mono']">
+            <div id="terminal-text"></div>
+            <span class="cursor">_</span>
+        </div>
+    </div>
 
     <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-cyan-400 to-violet-500 z-[100] w-0 transition-all duration-100 ease-out shadow-[0_0_10px_rgba(6,182,212,0.7)]"></div>
 
@@ -36,8 +46,7 @@
         </div>
     </nav>
 
-    <main class="min-h-screen">
-        {% block content %}{% endblock %}
+    <main class="min-h-screen pt-20"> {% block content %}{% endblock %}
     </main>
 
     <footer class="py-6 border-t border-white/5 bg-[#020617] font-mono text-xs text-slate-500">
@@ -63,6 +72,9 @@
         </div>
     </footer>
 
+    <script>
+        lucide.createIcons();
+    </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
