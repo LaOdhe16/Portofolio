@@ -1,63 +1,84 @@
 document.addEventListener("DOMContentLoaded", function() {
     
     // =========================================
-    // 1. [NEW] BOOT SEQUENCE (Terminal Loading)
+    // 1. [UPGRADED] BOOT SEQUENCE & LOADING BAR
     // =========================================
-    const terminalText = document.getElementById('terminal-text');
-    const overlay = document.getElementById('boot-overlay');
-    
-    // Pastikan elemen ada sebelum menjalankan animasi
-    if (terminalText && overlay) {
-        const bootSequence = [
-            "> INITIALIZING KERNEL...",
-            "> LOADING SECURITY MODULES...",
-            "> ESTABLISHING SECURE CONNECTION...",
-            "> DECRYPTING DATA...",
-            "> ACCESS GRANTED.",
-            "> WELCOME, USER."
+    const bootOverlay = document.getElementById('boot-overlay');
+    const bootText = document.getElementById('boot-text');
+    const progressBar = document.getElementById('progress-bar');
+    const lockIconContainer = document.getElementById('lock-icon');
+    const randomCode = document.getElementById('random-code');
+
+    // Cek apakah elemen boot ada (hanya jalankan jika ada overlay)
+    if (bootOverlay && bootText && progressBar) {
+        
+        // Daftar langkah loading
+        const steps = [
+            { text: "ESTABLISHING CONNECTION...", percent: 20 },
+            { text: "VERIFYING ENCRYPTION...", percent: 45 },
+            { text: "LOADING ASSETS...", percent: 70 },
+            { text: "BYPASSING FIREWALL...", percent: 90 },
+            { text: "ACCESS GRANTED.", percent: 100 }
         ];
 
-        let lineIndex = 0;
-        let charIndex = 0;
-        const typingSpeed = 20; // Kecepatan ngetik (ms)
-        const linePause = 300;  // Jeda antar baris (ms)
+        let stepIndex = 0;
 
-        function typeBootSequence() {
-            if (lineIndex < bootSequence.length) {
-                if (charIndex < bootSequence[lineIndex].length) {
-                    terminalText.innerHTML += bootSequence[lineIndex].charAt(charIndex);
-                    charIndex++;
-                    setTimeout(typeBootSequence, typingSpeed);
-                } else {
-                    // Pindah baris baru
-                    terminalText.innerHTML += "<br>";
-                    lineIndex++;
-                    charIndex = 0;
-                    setTimeout(typeBootSequence, linePause);
-                }
+        // Fungsi Rekursif untuk Loading Step
+        function nextStep() {
+            if (stepIndex < steps.length) {
+                const step = steps[stepIndex];
+                
+                // Update Text & Bar
+                bootText.innerText = step.text;
+                progressBar.style.width = step.percent + "%";
+
+                // Efek Random Code Hacker
+                if(randomCode) randomCode.innerText = "HEX_" + Math.floor(Math.random() * 0xFFFFFF).toString(16).toUpperCase();
+
+                stepIndex++;
+                
+                // Waktu acak antara 400ms - 800ms per step biar terlihat natural
+                setTimeout(nextStep, Math.random() * 400 + 400); 
+            
             } else {
-                // Selesai ngetik, hilangkan overlay
-                setTimeout(() => {
-                    overlay.classList.add('fade-out');
-                    // Hapus overlay dari tampilan setelah animasi fade selesai
-                    setTimeout(() => {
-                        overlay.style.display = 'none';
-                        // Mulai animasi elemen halaman setelah loading selesai
-                        triggerPageAnimations(); 
-                    }, 800);
-                }, 500);
+                // Loading Selesai
+                finishBoot();
             }
         }
-        
-        // Mulai Boot Sequence
-        typeBootSequence();
+
+        function finishBoot() {
+            // Ganti Icon Gembok jadi Terbuka
+            lockIconContainer.innerHTML = '<i data-lucide="unlock" class="w-16 h-16 mx-auto text-emerald-400"></i>';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            
+            // Tambah efek visual
+            lockIconContainer.classList.add('unlock-animation');
+            bootText.classList.add('animate-pulse');
+            bootText.style.color = "#34d399"; // Emerald-400
+
+            // Delay sebentar, lalu Flash & Hilang
+            setTimeout(() => {
+                bootOverlay.classList.add('access-granted');
+                bootOverlay.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    bootOverlay.style.display = 'none';
+                    triggerPageAnimations(); // Jalankan animasi konten web
+                }, 800);
+            }, 600);
+        }
+
+        // Mulai sequence
+        setTimeout(nextStep, 500);
+
     } else {
-        // Jika overlay tidak ada (misal di halaman lain), langsung trigger animasi
+        // Jika tidak ada overlay, langsung tampilkan konten
         triggerPageAnimations();
     }
 
+
     // =========================================
-    // 2. [NEW] SCROLL REVEAL (Muncul saat Scroll)
+    // 2. SCROLL REVEAL OBSERVER
     // =========================================
     function triggerPageAnimations() {
         const observer = new IntersectionObserver((entries) => {
@@ -67,16 +88,17 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             });
         }, {
-            threshold: 0.1 // Muncul ketika 10% elemen terlihat
+            threshold: 0.1
         });
 
-        // Cari semua elemen dengan class 'hidden-element'
+        // Targetkan elemen dengan class 'hidden-element'
         const hiddenElements = document.querySelectorAll('.hidden-element');
         hiddenElements.forEach((el) => observer.observe(el));
     }
 
+
     // =========================================
-    // 3. [OLD] SPOTLIGHT MOUSE TRACKING
+    // 3. SPOTLIGHT MOUSE TRACKING
     // =========================================
     const cards = document.querySelectorAll(".spotlight-card");
     cards.forEach(card => {
@@ -89,29 +111,24 @@ document.addEventListener("DOMContentLoaded", function() {
         };
     });
 
+
     // =========================================
-    // 4. [OLD] SCROLL PROGRESS BAR
+    // 4. SCROLL PROGRESS BAR (TOP)
     // =========================================
     window.addEventListener('scroll', () => {
         const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
         const scrollPercent = (scrollTop / scrollHeight) * 100;
         
-        const progressBar = document.getElementById('scroll-progress');
-        if (progressBar) {
-            progressBar.style.width = scrollPercent + '%';
+        const progressBarTop = document.getElementById('scroll-progress');
+        if (progressBarTop) {
+            progressBarTop.style.width = scrollPercent + '%';
         }
     });
 
-    // =========================================
-    // 5. [OLD] INITIALIZE ICONS
-    // =========================================
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
 
     // =========================================
-    // 6. [OLD] TYPING EFFECT (Untuk Banner Utama)
+    // 5. TYPING EFFECT (BANNER)
     // =========================================
     const textElement = document.getElementById("typing-text");
     if (textElement) {
@@ -129,42 +146,48 @@ document.addEventListener("DOMContentLoaded", function() {
                 textElement.textContent = currentRole.substring(0, charIndex + 1);
                 charIndex++;
             }
+            
             let typeSpeed = isDeleting ? 50 : 100;
+            
             if (!isDeleting && charIndex === currentRole.length) {
                 typeSpeed = 2000; isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false; roleIndex = (roleIndex + 1) % roles.length; typeSpeed = 500;
             }
+            
             setTimeout(type, typeSpeed);
         }
         type();
     }
 
+
     // =========================================
-    // 7. [OLD] ANIMATE SKILL BARS
+    // 6. SKILL BAR ANIMATION
     // =========================================
     const skillBars = document.querySelectorAll('.skill-fill');
-    skillBars.forEach(bar => { bar.style.width = '0%'; bar.style.transition = 'width 1.5s ease-out'; });
-
-    const observerOptions = { threshold: 0.5 };
+    
     const skillObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const bar = entry.target;
                 const targetWidth = bar.getAttribute('data-width');
+                // Set width dari 0 ke target
                 bar.style.width = targetWidth;
                 observer.unobserve(bar);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.5 });
 
-    skillBars.forEach(bar => { skillObserver.observe(bar); });
+    skillBars.forEach(bar => { 
+        bar.style.width = '0%'; // Reset dulu ke 0
+        skillObserver.observe(bar); 
+    });
+
 });
 
-/* =========================================
-   8. GLOBAL MODAL FUNCTIONS
-   (Tetap di luar DOMContentLoaded agar bisa dipanggil HTML)
-   ========================================= */
+// =========================================
+// 7. MODAL FUNCTIONS (OUTSIDE DOM CONTENT LOADED)
+// =========================================
 function openModal(imageSrc, title) {
     const modal = document.getElementById('imageModal');
     const modalContent = document.getElementById('modalContent');
