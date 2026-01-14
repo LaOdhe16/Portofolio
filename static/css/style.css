@@ -6,7 +6,6 @@
     --accent-cyan: #06b6d4;
     --accent-violet: #8b5cf6;
     --accent-emerald: #10b981;
-    --term-green: #00ff41; /* Warna Hijau Terminal */
 }
 
 /* Custom Text Selection */
@@ -29,69 +28,32 @@ body {
     background-color: var(--bg-dark);
     color: #e2e8f0;
     font-family: 'Outfit', sans-serif;
-    overflow-x: hidden; /* Mencegah scroll horizontal */
+    overflow-x: hidden;
 }
 
 /* =========================================
-   2. SYSTEM BOOT OVERLAY (NEW FEATURE)
+   2. BOOT ANIMATIONS (VAULT STYLE)
    ========================================= */
-#boot-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #050505;
-    z-index: 9999; /* Paling atas menutupi navbar */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 20px;
+
+/* Efek Layar Flash Hijau saat Access Granted */
+@keyframes screenFlash {
+    0% { background-color: rgba(16, 185, 129, 0); }
+    50% { background-color: rgba(16, 185, 129, 0.15); } /* Flash halus */
+    100% { background-color: rgba(16, 185, 129, 0); }
 }
 
-/* Efek Garis Monitor CRT (Scanlines) */
-#boot-overlay::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 2;
-    background-size: 100% 2px, 3px 100%;
-    pointer-events: none;
+.access-granted {
+    animation: screenFlash 0.5s ease-out;
 }
 
-.terminal-container {
-    width: 100%;
-    max-width: 700px;
-    font-family: 'Space Mono', monospace;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: var(--term-green);
-    text-shadow: 0 0 5px var(--term-green); /* Efek glow teks */
-    z-index: 3;
+/* Animasi Gembok Terbuka */
+.unlock-animation {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 20px #10b981);
+    transition: all 0.3s ease;
 }
 
-.cursor {
-    display: inline-block;
-    width: 10px;
-    height: 1.2em;
-    background-color: var(--term-green);
-    animation: blink 1s infinite;
-    vertical-align: text-bottom;
-    margin-left: 5px;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
-
-/* Class untuk menghilangkan overlay (Dipanggil JS) */
+/* Fade Out Overlay */
 .fade-out {
     opacity: 0;
     pointer-events: none;
@@ -99,112 +61,85 @@ body {
 }
 
 /* =========================================
-   3. SCROLL REVEAL ANIMATIONS (NEW FEATURE)
+   3. GLOBAL BACKGROUND ANIMATION (MOVING GRID)
    ========================================= */
-/* State Awal (Tersembunyi) */
+.cyber-grid {
+    background-size: 50px 50px;
+    background-image: 
+        linear-gradient(to right, rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+    
+    /* Membuat grid memudar di pinggir (Vignette) */
+    mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 100%);
+    
+    z-index: -2;
+    /* Animasi Gerak */
+    animation: gridMove 25s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 50px 50px; }
+}
+
+/* =========================================
+   4. SCROLL REVEAL (ELEMENTS APPEAR ON SCROLL)
+   ========================================= */
 .hidden-element {
     opacity: 0;
-    filter: blur(5px); /* Efek blur sedikit */
-    transform: translateY(40px); /* Geser ke bawah */
-    transition: all 1s cubic-bezier(0.2, 1, 0.3, 1); /* Transisi smooth */
+    transform: translateY(30px);
+    filter: blur(4px);
+    transition: all 0.8s cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-/* State Akhir (Muncul saat discroll) */
 .show-element {
     opacity: 1;
-    filter: blur(0);
     transform: translateY(0);
+    filter: blur(0);
 }
 
-/* Stagger delay untuk anak-anak elemen (Optional) */
+/* Delay anak elemen (optional) */
 .show-element:nth-child(2) { transition-delay: 100ms; }
 .show-element:nth-child(3) { transition-delay: 200ms; }
 
 /* =========================================
-   4. BACKGROUND ANIMATIONS (OLD BUT GOLD)
-   ========================================= */
-.cyber-grid {
-    background-size: 50px 50px;
-    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                      linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-    mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to bottom, black 20%, transparent 100%);
-    z-index: -2;
-}
-
-.particles-container {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    overflow: hidden;
-    z-index: -1; pointer-events: none;
-}
-.particle {
-    position: absolute;
-    background: rgba(6, 182, 212, 0.4);
-    border-radius: 50%;
-    animation: floatUp linear infinite;
-    bottom: -10px;
-}
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(0.5); opacity: 0; }
-    50% { opacity: 0.5; }
-    100% { transform: translateY(-110vh) scale(1); opacity: 0; }
-}
-
-/* =========================================
-   5. COMPONENT ANIMATIONS
-   ========================================= */
-/* Simple Photo Glow */
-.simple-glow { position: relative; z-index: 1; }
-.simple-glow::after {
-    content: ''; position: absolute; inset: -3px; border-radius: 18px;
-    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-violet));
-    z-index: -1; filter: blur(15px); opacity: 0.5;
-    animation: breathe 5s ease-in-out infinite;
-}
-@keyframes breathe {
-    0%, 100% { opacity: 0.3; transform: scale(0.98); }
-    50% { opacity: 0.6; transform: scale(1.01); }
-}
-
-/* Scanner Effect for Certs */
-.scan-container { position: relative; overflow: hidden; }
-.scan-line {
-    position: absolute; width: 100%; height: 2px;
-    background: var(--accent-cyan); box-shadow: 0 0 10px var(--accent-cyan);
-    top: -10%; left: 0; opacity: 0.6; z-index: 10; transition: top 0s;
-}
-.group:hover .scan-line { top: 110%; transition: top 1.2s ease-in-out; }
-
-/* Glitch Text */
-.glitch-text { text-shadow: 2px 0 var(--accent-violet), -2px 0 var(--accent-cyan); animation: glitch 4s infinite alternate; }
-@keyframes glitch {
-    0%, 95% { text-shadow: 2px 0 var(--accent-violet), -2px 0 var(--accent-cyan); }
-    98% { text-shadow: -2px 0 var(--accent-emerald), 2px 0 var(--accent-violet); }
-    100% { text-shadow: 2px 0 var(--accent-cyan), -2px 0 var(--accent-emerald); }
-}
-
-/* =========================================
-   6. ADVANCED CARDS (DESIGN PREMIUM)
+   5. COMPONENT STYLES
    ========================================= */
 
-/* a. Spotlight Effect (Cahaya Senter) */
+/* Glitch Text on Hover */
+.hover-glitch:hover {
+    text-shadow: 2px 0 #06b6d4, -2px 0 #8b5cf6;
+    animation: glitch-anim 0.3s infinite;
+}
+@keyframes glitch-anim {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+/* Spotlight Card (Efek Senter) */
 .spotlight-card {
     position: relative; overflow: hidden;
     background: rgba(15, 23, 42, 0.6);
     --mouse-x: 0px; --mouse-y: 0px;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.05);
 }
 .spotlight-card::before {
     content: ""; position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(6, 182, 212, 0.1), transparent 40%);
+    background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(6, 182, 212, 0.08), transparent 40%);
     z-index: 0; opacity: 0; transition: opacity 0.3s; pointer-events: none;
 }
 .spotlight-card:hover::before { opacity: 1; }
+.spotlight-card:hover { border-color: rgba(6,182,212,0.3); transform: translateY(-5px); transition: all 0.3s ease; }
 .spotlight-card > * { position: relative; z-index: 1; }
 
-/* b. Tech Corners (Siku Taktikal) */
+/* Tech Border/Corners */
 .tech-border { position: relative; }
 .tech-border::after {
     content: ''; position: absolute;
@@ -220,25 +155,10 @@ body {
     box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
 }
 
-/* c. Timeline Styles */
-.timeline-item { position: relative; }
-.timeline-dot {
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--bg-dark); border: 2px solid var(--accent-cyan);
-    box-shadow: 0 0 8px rgba(6, 182, 212, 0.5);
-    transition: all 0.3s ease;
+/* Timeline */
+.timeline-item:hover .timeline-dot {
+    background: var(--accent-cyan); 
+    transform: scale(1.3);
+    box-shadow: 0 0 10px var(--accent-cyan);
 }
-.timeline-item:hover .timeline-dot { background: var(--accent-cyan); transform: scale(1.3); }
-
-/* d. Glass Fallback (General Use) */
-.glass-panel {
-    background: rgba(15, 23, 42, 0.5);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.4s ease;
-}
-.glass-panel:hover {
-    border-color: rgba(6, 182, 212, 0.2);
-    background: rgba(15, 23, 42, 0.8);
-    transform: translateY(-5px);
-}
+.timeline-dot { transition: all 0.3s ease; }
