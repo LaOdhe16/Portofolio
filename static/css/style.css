@@ -1,9 +1,12 @@
-/* --- 1. CONFIG & COLORS --- */
+/* =========================================
+   1. CONFIG & COLORS
+   ========================================= */
 :root {
     --bg-dark: #0f172a;
     --accent-cyan: #06b6d4;
     --accent-violet: #8b5cf6;
     --accent-emerald: #10b981;
+    --term-green: #00ff41; /* Warna Hijau Terminal */
 }
 
 /* Custom Text Selection */
@@ -18,15 +21,108 @@
 ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-cyan); }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: var(--bg-dark);
     color: #e2e8f0;
     font-family: 'Outfit', sans-serif;
-    overflow-x: hidden;
-    scroll-behavior: smooth;
+    overflow-x: hidden; /* Mencegah scroll horizontal */
 }
 
-/* --- 2. BACKGROUND ANIMATIONS --- */
+/* =========================================
+   2. SYSTEM BOOT OVERLAY (NEW FEATURE)
+   ========================================= */
+#boot-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #050505;
+    z-index: 9999; /* Paling atas menutupi navbar */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+/* Efek Garis Monitor CRT (Scanlines) */
+#boot-overlay::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+.terminal-container {
+    width: 100%;
+    max-width: 700px;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--term-green);
+    text-shadow: 0 0 5px var(--term-green); /* Efek glow teks */
+    z-index: 3;
+}
+
+.cursor {
+    display: inline-block;
+    width: 10px;
+    height: 1.2em;
+    background-color: var(--term-green);
+    animation: blink 1s infinite;
+    vertical-align: text-bottom;
+    margin-left: 5px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Class untuk menghilangkan overlay (Dipanggil JS) */
+.fade-out {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease-out;
+}
+
+/* =========================================
+   3. SCROLL REVEAL ANIMATIONS (NEW FEATURE)
+   ========================================= */
+/* State Awal (Tersembunyi) */
+.hidden-element {
+    opacity: 0;
+    filter: blur(5px); /* Efek blur sedikit */
+    transform: translateY(40px); /* Geser ke bawah */
+    transition: all 1s cubic-bezier(0.2, 1, 0.3, 1); /* Transisi smooth */
+}
+
+/* State Akhir (Muncul saat discroll) */
+.show-element {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+}
+
+/* Stagger delay untuk anak-anak elemen (Optional) */
+.show-element:nth-child(2) { transition-delay: 100ms; }
+.show-element:nth-child(3) { transition-delay: 200ms; }
+
+/* =========================================
+   4. BACKGROUND ANIMATIONS (OLD BUT GOLD)
+   ========================================= */
 .cyber-grid {
     background-size: 50px 50px;
     background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
@@ -36,7 +132,6 @@ body {
     z-index: -2;
 }
 
-/* Particles (Debu Digital) */
 .particles-container {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -56,7 +151,9 @@ body {
     100% { transform: translateY(-110vh) scale(1); opacity: 0; }
 }
 
-/* --- 3. COMPONENT ANIMATIONS --- */
+/* =========================================
+   5. COMPONENT ANIMATIONS
+   ========================================= */
 /* Simple Photo Glow */
 .simple-glow { position: relative; z-index: 1; }
 .simple-glow::after {
@@ -87,11 +184,9 @@ body {
     100% { text-shadow: 2px 0 var(--accent-cyan), -2px 0 var(--accent-emerald); }
 }
 
-/* Fade In Animation */
-.animate-fade-in { animation: fadeIn 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards; opacity: 0; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-/* --- 4. ADVANCED CARDS (DESIGN PREMIUM) --- */
+/* =========================================
+   6. ADVANCED CARDS (DESIGN PREMIUM)
+   ========================================= */
 
 /* a. Spotlight Effect (Cahaya Senter) */
 .spotlight-card {
